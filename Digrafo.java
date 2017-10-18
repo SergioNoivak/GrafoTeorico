@@ -12,15 +12,15 @@ public class Digrafo extends Grafo {
         numeroEstados = 0;
     }
     @Override
-    public void addAresta(char inicio, char fim) {
+    public void addAresta(String inicio, String fim,double custo) {
 
         int indexInicio = this.retornaDoVetor(inicio);
         int indexFim = this.retornaDoVetor(fim);
         if (indexInicio == -1 || indexFim == -1) {
             return;
         }
-        this.vetor.get(indexInicio).addNoEmAdj(this.vetor.get(indexFim));
-        this.vetor.get(indexFim).addNoEmAdj(this.vetor.get(indexInicio));
+        this.vetor.get(indexInicio).addNoEmAdj(this.vetor.get(indexFim),custo);
+        this.vetor.get(indexFim).addNoEmAdj(this.vetor.get(indexInicio),custo);
 
     }
     

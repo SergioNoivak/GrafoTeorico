@@ -1,12 +1,9 @@
 package grafos;
 
 import grafos.No;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 public class Grafo {
 
@@ -19,12 +16,12 @@ public class Grafo {
         numeroEstados = 0;
     }
 
-    public void addVetorRepresentacao(char c) {
+    public void addVetorRepresentacao(String c) {
         numeroEstados++;
         this.vetor.add(new No(c));
     }
 
-    int retornaDoVetor(char nomeDoEstado) {
+    int retornaDoVetor(String nomeDoEstado) {
 
         boolean achouNoVetor = false;
         int i = 0;
@@ -44,7 +41,7 @@ public class Grafo {
 
     }
 
-    boolean InicioFimValidos(char inicio, char fim) {
+    boolean InicioFimValidos(String inicio, String fim) {
         int indexInicio = this.retornaDoVetor(inicio);
         int indexFim = this.retornaDoVetor(fim);
         if (indexInicio == -1 || indexInicio == -1) {
@@ -54,7 +51,7 @@ public class Grafo {
 
     }
 
-    public void exibeDistancia(char inicio, char fim) {
+    public void exibeDistancia(String inicio, String fim) {
 
         StringBuilder str = BuscaEmLargura(inicio, fim);
         if (str == null) {
@@ -62,10 +59,10 @@ public class Grafo {
             return;
 
         }
-        System.out.println("Caminho: "+str);
+        System.out.println("Caminho: " + str);
     }
 
-    protected StringBuilder BuscaEmLargura(char inicio, char fim) {
+    protected StringBuilder BuscaEmLargura(String inicio, String fim) {
 
         StringBuilder resultado = new StringBuilder("");
 
@@ -92,24 +89,24 @@ public class Grafo {
             if (u.nomeDoEstado == fim) {
                 return new StringBuilder("ja chegou");
             }
-            for (No v : u.Adj) {
-                if (v.cor == 0) {
-                    v.cor = 1;
-                    v.antecessor = u;
-                    if (v.nomeDoEstado == fim) {
+            for (Aresta v : u.Adj) {
+                if (v.fim.cor == 0) {
+                    v.fim.cor = 1;
+                    v.fim.antecessor = u;
+                    if (v.fim.nomeDoEstado == fim) {
 
-                        while (v.nomeDoEstado != inicio) {
+                        while (v.fim.nomeDoEstado != inicio) {
 
-                            resultado.append(v.nomeDoEstado).append(" ");
-                            v = v.antecessor;
+                            resultado.append(v.fim.nomeDoEstado).append(" ");
+                            v.fim = v.fim.antecessor;
 
                         }
-                        resultado.append(v.nomeDoEstado).append("");
+                        resultado.append(v.fim.nomeDoEstado).append("");
 
                         return resultado;
                     }
 
-                    Q.push(v);
+                    Q.push(v.fim);
                 }
 
             }
@@ -119,14 +116,14 @@ public class Grafo {
         return null;
     }
 
-    public void addAresta(char inicio, char fim) {
+    public void addAresta(String inicio, String fim, double custo) {
 
         int indexInicio = this.retornaDoVetor(inicio);
         int indexFim = this.retornaDoVetor(fim);
         if (indexInicio == -1 || indexFim == -1) {
             return;
         }
-        this.vetor.get(indexInicio).addNoEmAdj(this.vetor.get(indexFim));
+        this.vetor.get(indexInicio).addNoEmAdj(this.vetor.get(indexFim),custo);
     }
 
     void exibeListaAdj() {
@@ -134,7 +131,5 @@ public class Grafo {
         for (No no : this.vetor) {
             no.exibeLinhaDaLista();
         }
-
     }
-
 }
